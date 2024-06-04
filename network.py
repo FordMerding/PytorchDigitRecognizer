@@ -1,21 +1,19 @@
-from torch import nn
+import torch.nn as nn
 
 class Network(nn.Module):
     def __init__(self):
         super().__init__()
         self.flatten = nn.Flatten()
-        self.stack = nn.Sequential(
-            nn.Linear(28*28, 16),
-            nn.Sigmoid(),
-            nn.Linear(16, 16),
-            nn.Sigmoid(),
-            nn.Linear(16, 16),
-            nn.Sigmoid(),
-            nn.Linear(16, 10),
-            nn.Sigmoid()
+        self.layers = nn.Sequential(
+            nn.Linear(28*28, 256),
+            nn.ReLU(),
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Linear(256, 10),
+            nn.LogSoftmax(1)
         )
     def forward(self, a):
-        a = self.flatten(a)
-        out = self.stack(a)
+        x = self.flatten(a)
+        out = self.layers(x)
         return out
-
+    
